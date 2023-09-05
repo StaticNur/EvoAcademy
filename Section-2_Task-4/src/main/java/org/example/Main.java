@@ -14,7 +14,7 @@ public class Main {
         String str1 = scanner.nextLine();
         String substr = scanner.nextLine();
         String[] array = str1.split(substr);
-        System.out.println(array.length - 1);
+        System.out.println(array.length);
 
         //4.2.
         System.out.println("\n4.2");
