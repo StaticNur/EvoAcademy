@@ -34,7 +34,7 @@ public class Main {
 
             //3
             calendar.setTime(date1);
-            int count = 0;
+            int count = 1;
             while (count < 10) {
                 calendar.add(Calendar.DAY_OF_MONTH, 1);
                 int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -47,11 +47,18 @@ public class Main {
 
 
             //4
-            calendar.setTime(date1);
             dateInput = scanner.nextLine();
             Date date2 = format.parse(dateInput);
-            count = 0;
-            while (calendar.getTime().before(date2)) {
+            count = 1;
+            Date endDate;
+            if (date1.before(date2)) {
+                calendar.setTime(date1);
+                endDate = date2;
+            } else {
+                calendar.setTime(date2);
+                endDate = date1;
+            }
+            while (calendar.getTime().before(endDate)) {
                 int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
                 if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY)
                     count++;
