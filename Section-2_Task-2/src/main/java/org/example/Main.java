@@ -10,19 +10,23 @@ public class Main {
         int c = scanner.nextInt();
         if ((a % 5 != 0) && (b % 5 != 0) && (c % 5 != 0))
             System.out.println("нет значений, кратных 5");
-        if (a % 5 == 0)
+        if ((a % 5 == 0) && ((b % 5 == 0) || (c % 5 == 0)))
             System.out.print("a=" + a + ", ");
-        if (b % 5 == 0)
+        else if ((a % 5 == 0) && ((b % 5 != 0) && (c % 5 != 0)))
+            System.out.print("a=" + a);
+        if ((b % 5 == 0) && (c % 5 == 0))
             System.out.print("b=" + b + ", ");
+        else if (b % 5 == 0)
+            System.out.print("b=" + b);
         if (c % 5 == 0)
             System.out.print("c=" + c);
-        System.out.println("\n"+a/b);
-        System.out.println(((double) a/(double) b));
+        System.out.println("\n" + a / b);
+        System.out.println(((double) a / (double) b));
         System.out.println((int) Math.ceil((double) a / b));
         System.out.println((int) Math.floor((double) a / b));
         System.out.println(Math.round((float) a / b));
-        System.out.println(b%c);
-        System.out.println(Math.min(a,b));
-        System.out.println(Math.max(b,c));
+        System.out.println(b % c);
+        System.out.println(Math.min(a, b));
+        System.out.println(Math.max(b, c));
     }
 }
