@@ -13,8 +13,8 @@ public class Main {
         System.out.println("4.1");
         String str1 = scanner.nextLine();
         String substr = scanner.nextLine();
-        String[] array = str1.split(substr);
-        System.out.println(array.length);
+        int count = countOccurrences(str1, substr);
+        System.out.println(count);
 
         //4.2.
         System.out.println("\n4.2");
@@ -41,5 +41,14 @@ public class Main {
             e.printStackTrace();
         }
         scanner.close();
+    }
+    public static int countOccurrences(String str, String substring) {
+        int count = 0;
+        int index = str.indexOf(substring);
+        while (index != -1) {
+            count++;
+            index = str.indexOf(substring, index + 1);
+        }
+        return count;
     }
 }
