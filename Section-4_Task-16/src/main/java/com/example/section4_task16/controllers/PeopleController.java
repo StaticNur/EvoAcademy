@@ -30,8 +30,11 @@ public class PeopleController {
     }
 
     @GetMapping("/persons/{id}/messages")
-    public Iterable<Message> getPersonsMessages(@PathVariable("id") int id) {
-        return personService.viewPersonAllMessages(id);
+    public ResponseEntity<Iterable<Message>> getPersonsMessages(@PathVariable("id") int id) {
+        Iterable<Message> messages = personService.viewPersonAllMessages(id);
+        if (messages == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
     @PostMapping("/persons")

@@ -34,7 +34,11 @@ public class PersonService {
     }
 
     public Iterable<Message> viewPersonAllMessages(int id) {
-        return personRepository.findById(id).get().getMessages();
+        Person person = personRepository.findById(id).orElse(null);
+        if (person == null) {
+            return null;
+        }
+        return person.getMessages();
     }
 
     @Transactional
