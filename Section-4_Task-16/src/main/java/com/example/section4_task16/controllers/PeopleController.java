@@ -63,7 +63,11 @@ public class PeopleController {
     }
 
     @DeleteMapping("/persons/{p_id}/messages/{m_id}")
-    public void deletePersonMessage(@PathVariable("p_id") int p_id, @PathVariable("m_id") int m_id) {
-        personService.deletePersonMessage(p_id, m_id);
+    public ResponseEntity<Person> deletePersonMessage(@PathVariable("p_id") int p_id, @PathVariable("m_id") int m_id) {
+        Boolean deleted = personService.deletePersonMessage(p_id, m_id);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -72,9 +74,17 @@ public class PersonService {
     }
 
     @Transactional
-    public void deletePersonMessage(int p_id, int m_id) {
-        Person person = personRepository.findById(p_id).get();
-        Message message = messageRepository.findById(m_id).get();
-        person.getMessages().remove(message);
+    public Boolean deletePersonMessage(int p_id, int m_id) {
+        Person person = personRepository.findById(p_id).orElse(null);
+        Message message = messageRepository.findById(m_id).orElse(null);
+        if (person == null || message == null) {
+            return false;
+        }
+        if (person.getMessages().contains(message)) {
+            person.getMessages().remove(message);
+            messageRepository.deleteById(m_id);
+            return true;
+        }
+        return false;
     }
 }
