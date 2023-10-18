@@ -8,27 +8,25 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 @RestController
-@RequestMapping("/weathers")
 public class WeatherController {
     private final RestTemplate restTemplate;
     @Value("${appid}")
     private String appId;
     @Value("${url.weather}")
     private String urlWeather;
+
     @Autowired
     public WeatherController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    @Cacheable(value = "data")
+
     @GetMapping
-    public Main getWeather(@RequestParam String lat, @RequestParam String lon){
-        /*try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
+    @Cacheable(value = "data")
+    public Main getWeather(@RequestParam("lat") String lat, @RequestParam("lon") String lon) {
         String request = String.format("%s?lat=%s&lon=%s&units=metric&appid=%s", urlWeather, lat, lon, appId);
-        return restTemplate.getForObject(request, Root.class).getMain();
+        return Objects.requireNonNull(restTemplate.getForObject(request, Root.class)).getMain();
     }
 }

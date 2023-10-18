@@ -8,18 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.io.Serializable;
+
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Location {
+public class Geodata implements Serializable {
     @Id
     @GeneratedValue
-    private int id;
+    int id;
     @NonNull
-    private String nameLocation;
+    private double lon;
     @NonNull
-    private String latitude;
+    private double lat;
     @NonNull
-    private String longitude;
+    private String name;
 }
