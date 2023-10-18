@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Geodata implements Serializable {
+public class Geodata{
     @Id
     @GeneratedValue
     int id;
