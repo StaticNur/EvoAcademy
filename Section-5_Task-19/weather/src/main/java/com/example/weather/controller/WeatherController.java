@@ -1,33 +1,34 @@
 package com.example.weather.controller;
 
-import com.example.weather.service.Request;
+import com.example.weather.model.Main;
+import com.example.weather.model.Root;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/weathers")
 public class WeatherController {
-    private final Request request;
-
+    private final RestTemplate restTemplate;
+    @Value("${appid}")
+    private String appId;
+    @Value("${url.weather}")
+    private String urlWeather;
     @Autowired
-    public WeatherController(Request request) {
-        this.request = request;
+    public WeatherController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
-
+    @Cacheable(value = "data")
     @GetMapping
-    public ResponseEntity<String> showWeather() {
-        try {
-            String response = request.getWeather();
-            if (response != null) {
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
-        } catch (IOException e) {
+    public Main getWeather(@RequestParam String lat, @RequestParam String lon){
+        /*try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }*/
+        String request = String.format("%s?lat=%s&lon=%s&units=metric&appid=%s", urlWeather, lat, lon, appId);
+        return restTemplate.getForObject(request, Root.class).getMain();
     }
 }
