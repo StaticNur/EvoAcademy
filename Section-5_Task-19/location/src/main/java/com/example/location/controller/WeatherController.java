@@ -23,19 +23,15 @@ public class WeatherController {
     }
 
     @GetMapping("/weather")
-    public ResponseEntity<Weather> redirectRequestWeather(@RequestParam("location") String location) {
-        Geodata geodata = geodataService.getGeodata(location);
-        if (geodata == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public Weather redirectRequestWeather(@RequestParam("location") String location) {
+        Geodata geodata = geodataService.getGeodata(location).get();
         String url = String.format("http://localhost:8082/?lat=%s&lon=%s", geodata.getLat(), geodata.getLon());
-        Weather response = restTemplate.getForObject(url, Weather.class);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return restTemplate.getForObject(url, Weather.class);
     }
 
     @GetMapping
     public Geodata getLocation(@RequestParam("location") String location) {
-        return geodataService.getGeodata(location);
+        return geodataService.getGeodata(location).get();
     }
 
     @PostMapping
