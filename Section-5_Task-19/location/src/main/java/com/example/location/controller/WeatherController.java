@@ -4,12 +4,10 @@ import com.example.location.model.Geodata;
 import com.example.location.model.Weather;
 import com.example.location.service.GeodataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.SSLEngineResult;
+import java.util.Optional;
 
 @RestController
 public class WeatherController {
@@ -30,8 +28,8 @@ public class WeatherController {
     }
 
     @GetMapping
-    public Geodata getLocation(@RequestParam("location") String location) {
-        return geodataService.getGeodata(location).get();
+    public Optional<Geodata> getWeather(@RequestParam("location") String location) {
+        return geodataService.getGeodata(location);
     }
 
     @PostMapping
