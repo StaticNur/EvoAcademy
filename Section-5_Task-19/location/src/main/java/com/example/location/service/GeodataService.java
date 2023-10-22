@@ -19,9 +19,8 @@ public class GeodataService {
         this.repository = repository;
     }
 
-    public Geodata getGeodata(String location) {
-        List<Geodata> geodataList = repository.findByName(location);
-        return geodataList.isEmpty() ? null : geodataList.get(0);
+    public Optional<Geodata> getGeodata(String location) {
+        return repository.findByName(location);
     }
 
     @Transactional
