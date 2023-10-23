@@ -4,6 +4,8 @@ import com.example.location.model.Geodata;
 import com.example.location.model.Weather;
 import com.example.location.service.GeodataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,10 +23,14 @@ public class WeatherController {
     }
 
     @GetMapping("/weather")
-    public Weather redirectRequestWeather(@RequestParam("location") String location) {
-        Geodata geodata = geodataService.getGeodata(location).get();
+    public ResponseEntity<Weather> redirectRequestWeather(@RequestParam("location") String location) {
+        Geodata geodata = geodataService.getGeodata(location).orElse(null);
+        if (geodata == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         String url = String.format("http://localhost:8082/?lat=%s&lon=%s", geodata.getLat(), geodata.getLon());
-        return restTemplate.getForObject(url, Weather.class);
+        Weather weather = restTemplate.getForObject(url, Weather.class);
+        return ResponseEntity.ok(weather);
     }
 
     @GetMapping
