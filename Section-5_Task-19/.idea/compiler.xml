@@ -8,17 +8,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="weather" />
-        <module name="person" />
         <module name="location" />
+        <module name="discovery-server" />
+        <module name="Section-5_Task-19" />
+        <module name="person" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="discovery-server" target="17" />
-      <module name="Section-5_Task-19" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Section-5_Task-19" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
       <module name="location" options="-parameters" />
       <module name="person" options="-parameters" />
       <module name="weather" options="-parameters" />

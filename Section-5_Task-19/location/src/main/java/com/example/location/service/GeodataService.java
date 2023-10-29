@@ -21,16 +21,13 @@ public class GeodataService {
 
     public Optional<Geodata> getGeodata(String location) {
         return repository.findByName(location);
-<<<<<<< HEAD
-    }
-    public Iterable<Geodata> showAll() {
-        return repository.findAll();
-=======
->>>>>>> cbbde4622372a633bdf2b5579dbb715ef3af051b
     }
     @Transactional
     public Geodata saveGeodata(Geodata geodata) {
         return repository.save(geodata);
+    }
+    public Iterable<Geodata> showAll() {
+        return repository.findAll();
     }
     @Transactional
     public void delete(int id) {
