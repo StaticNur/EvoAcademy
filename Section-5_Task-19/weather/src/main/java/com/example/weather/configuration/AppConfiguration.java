@@ -17,7 +17,7 @@ public class AppConfiguration {
         return cacheManager;
     }
     @Bean
-    //@LoadBalanced   убрали, т.к. у нас не получится балансировать сторонние сервисы
+    //@LoadBalanced
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }

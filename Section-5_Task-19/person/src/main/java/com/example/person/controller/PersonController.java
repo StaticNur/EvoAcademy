@@ -3,6 +3,7 @@ package com.example.person.controller;
 import com.example.person.model.Person;
 import com.example.person.model.Weather;
 import com.example.person.repositories.PersonRepository;
+import com.example.person.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,38 +16,44 @@ import java.util.Optional;
 @RequestMapping("/person")
 public class PersonController {
 
-    private final PersonRepository repository;
+    private final PersonService personService;
     private final RestTemplate restTemplate;
     @Autowired
-    public PersonController(PersonRepository repository, RestTemplate restTemplate) {
-        this.repository = repository;
+    public PersonController(PersonService personService, RestTemplate restTemplate) {
+        this.personService = personService;
         this.restTemplate = restTemplate;
     }
 
     @GetMapping("{id}/weather")
     public ResponseEntity<Weather> getWeather(@PathVariable("id") int id) {
-        if (repository.existsById(id)) {
-            String location = repository.findById(id).get().getLocation();
-            Weather weather = restTemplate.getForObject("location-info-service/weather?location=" + location, Weather.class);
-            return new ResponseEntity(weather, HttpStatus.OK);
+        Person person = personService.getPerson(id).orElse(null);
+        if (person == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        String location = person.getLocation();
+        Weather weather = restTemplate.getForObject("http://localhost:8083/weather?location=" + location, Weather.class);
+        return ResponseEntity.ok(weather);
     }
 
     @GetMapping
     public Iterable<Person> findAll() {
-        return repository.findAll();
+        return personService.showAll();
     }
 
     @GetMapping("/{id}")
     public Optional<Person> findById(@PathVariable("id") int id) {
-        return repository.findById(id);
+        return personService.getPerson(id);
     }
 
     @PostMapping
     public ResponseEntity<Person> save(@RequestBody Person person) {
-        return repository.findById(person.getId()).isPresent()
-                ? new ResponseEntity(repository.findById(person.getId()), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity(repository.save(person), HttpStatus.CREATED);
+        return personService.getPerson(person.getId()).isPresent()
+                ? new ResponseEntity(personService.getPerson(person.getId()), HttpStatus.BAD_REQUEST)
+                : new ResponseEntity(personService.save(person), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") int id) {
+        personService.delete(id);
     }
 }

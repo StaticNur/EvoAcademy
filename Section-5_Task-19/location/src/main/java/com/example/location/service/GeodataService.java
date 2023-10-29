@@ -19,16 +19,18 @@ public class GeodataService {
         this.repository = repository;
     }
 
-
-    public Iterable<Geodata> getGeodataList() {
+    public Optional<Geodata> getGeodata(String location) {
+        return repository.findByName(location);
+    }
+    public Iterable<Geodata> showAll() {
         return repository.findAll();
     }
-    public Geodata getGeodata(String location) {
-        return repository.findByName(location).get();
-    }
-
     @Transactional
     public Geodata saveGeodata(Geodata geodata) {
         return repository.save(geodata);
+    }
+    @Transactional
+    public void delete(int id) {
+        repository.deleteById(id);
     }
 }
