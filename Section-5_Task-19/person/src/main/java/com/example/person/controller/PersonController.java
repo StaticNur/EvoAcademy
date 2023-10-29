@@ -15,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/person")
 public class PersonController {
+<<<<<<< HEAD
 
     private final PersonService personService;
     private final RestTemplate restTemplate;
@@ -33,6 +34,14 @@ public class PersonController {
         String location = person.getLocation();
         Weather weather = restTemplate.getForObject("http://localhost:8083/weather?location=" + location, Weather.class);
         return ResponseEntity.ok(weather);
+=======
+    private final RestTemplate restTemplate;
+    private final PersonRepository repository;
+    @Autowired
+    public PersonController(RestTemplate restTemplate, PersonRepository repository) {
+        this.restTemplate = restTemplate;
+        this.repository = repository;
+>>>>>>> cbbde4622372a633bdf2b5579dbb715ef3af051b
     }
 
     @GetMapping
