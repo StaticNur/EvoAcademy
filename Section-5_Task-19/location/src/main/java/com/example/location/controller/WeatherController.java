@@ -28,7 +28,7 @@ public class WeatherController {
         if (geodata == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        String url = String.format("http://localhost:8082/?lat=%s&lon=%s", geodata.getLat(), geodata.getLon());
+        String url = String.format("http://weather-info-service/?lat=%s&lon=%s", geodata.getLat(), geodata.getLon());
         Weather weather = restTemplate.getForObject(url, Weather.class);
         return ResponseEntity.ok(weather);
     }

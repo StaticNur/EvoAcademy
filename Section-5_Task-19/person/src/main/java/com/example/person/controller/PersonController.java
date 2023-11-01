@@ -30,7 +30,7 @@ public class PersonController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         String location = person.getLocation();
-        Weather weather = restTemplate.getForObject("http://localhost:8083/weather?location=" + location, Weather.class);
+        Weather weather = restTemplate.getForObject("http://location-info-service/weather?location=" + location, Weather.class);
         return ResponseEntity.ok(weather);
     }
 
