@@ -5,6 +5,7 @@ import com.example.person.model.Weather;
 import com.example.person.repositories.PersonRepository;
 import com.example.person.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class PersonController {
     private final PersonService personService;
     private final RestTemplate restTemplate;
+    @Value("${location.service.url}")
+    private String url;
     @Autowired
     public PersonController(PersonService personService, RestTemplate restTemplate) {
         this.personService = personService;
@@ -30,7 +33,7 @@ public class PersonController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         String location = person.getLocation();
-        Weather weather = restTemplate.getForObject("http://location-info-service/weather?location=" + location, Weather.class);
+        Weather weather = restTemplate.getForObject(url + location, Weather.class);
         return ResponseEntity.ok(weather);
     }
 

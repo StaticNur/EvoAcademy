@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.section5_task19.Section5Task19ApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.891 s - in com.example.section5_task19.Section5Task19ApplicationTests

@@ -4,6 +4,7 @@ import com.example.location.model.Geodata;
 import com.example.location.model.Weather;
 import com.example.location.service.GeodataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public class WeatherController {
     private final GeodataService geodataService;
     private final RestTemplate restTemplate;
+    @Value("${weather.url}")
+    String weatherUrl;
 
     @Autowired
     public WeatherController(GeodataService geodataService, RestTemplate restTemplate) {
@@ -28,7 +31,7 @@ public class WeatherController {
         if (geodata == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        String url = String.format("http://weather-info-service/?lat=%s&lon=%s", geodata.getLat(), geodata.getLon());
+        String url = String.format("http://%s/?lat=%s&lon=%s", weatherUrl, geodata.getLat(), geodata.getLon());
         Weather weather = restTemplate.getForObject(url, Weather.class);
         return ResponseEntity.ok(weather);
     }
